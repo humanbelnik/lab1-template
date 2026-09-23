@@ -15,7 +15,24 @@ jobs:
         with:
           fetch-depth: 0
 
-      # TODO build, test and deploy project
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+
+      - name: Run unit tests
+        run: go test ./...
+
+      - name: Build
+        run: go build ./...
+
+      - name: Deploy to Render
+        if: github.event_name == 'push'
+        run: curl -f "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+      - name: Wait for deploy to become live
+        if: github.event_name == 'push'
+        run: sleep 60
 
       - name: Run API Tests
         uses: matt-ball/newman-action@master
