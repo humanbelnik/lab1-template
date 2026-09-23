@@ -32,7 +32,7 @@ func main() {
 	h := handler.NewPersonHandler(svc)
 	router := handler.NewRouter(h)
 
-	log.Printf("starting server on port %s", cfg.Port)
+	log.Printf("server on port %s", cfg.Port)
 	if err := http.ListenAndServe(":"+cfg.Port, router); err != nil {
 		log.Fatal(err)
 	}
